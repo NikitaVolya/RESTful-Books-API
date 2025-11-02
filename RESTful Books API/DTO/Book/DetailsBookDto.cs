@@ -7,7 +7,10 @@ namespace RESTful_Books_API.DTO.Book
         public class LoanData {
             public int Id { get; set; }
             public int UserId { get; set; }
-            public string UserName { get; set; } = null!;
+            public string UserFullName { get; set; } = null!;
+            public string UserFirstName { get; set; } = null!;
+            public string UserLastName { get; set; } = null!;
+            public string UserEmail { get; set; } = null!;
             public DateOnly LoanDate { get; set; }
             public DateOnly? ReturnDate { get; set; }
         }

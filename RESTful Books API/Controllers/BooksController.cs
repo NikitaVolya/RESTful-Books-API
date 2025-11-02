@@ -21,13 +21,25 @@ namespace RESTful_Books_API.Controllers
 
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] bool details = false)
         {
-            var books = await _context.Books.ToListAsync();
+            var books = await _context.Books
+                .Include(b => b.Loans)
+                .ThenInclude(l => l.User)
+                .ToListAsync();
 
-            List<ShortBookDto> booksDto = _mapper.Map<List<ShortBookDto>>(books);
+            if (details)
+            {
+                List<DetailsBookDto> booksDto = _mapper.Map<List<DetailsBookDto>>(books);
 
-            return Ok(booksDto);
+                return Ok(booksDto);
+            }
+            else
+            {
+                List<ShortBookDto> booksDto = _mapper.Map<List<ShortBookDto>>(books);
+
+                return Ok(booksDto);
+            }
         }
     }
 }
