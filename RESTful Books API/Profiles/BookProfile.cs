@@ -4,6 +4,7 @@ namespace RESTful_Books_API.Profiles
 {
     public class BookProfile : Profile
     {
+
         public BookProfile() {
 
             CreateMap<Models.Book, DTO.Book.ShortBookDto>().ReverseMap();
@@ -38,7 +39,7 @@ namespace RESTful_Books_API.Profiles
                     }).ToList());
                 })
                 .ForMember(dest => dest.CopiesInStock, opt => { 
-                    opt.MapFrom(src => src.CopiesAvailable);
+                    opt.MapFrom(src => src.CopiesAvailable - src.Loans.Where(l => l.ReturnDate == null).Count());
                 });
 
         }
