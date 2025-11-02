@@ -1,4 +1,4 @@
-﻿namespace RESTful_Books_API.DTO
+﻿namespace RESTful_Books_API.DTO.User
 {
     public class DetailsUserDto
     {
@@ -17,6 +17,8 @@
         public string Email { get; set; } = null!;
         public DateOnly MembershipDate { get; set; }
 
-        public IList<DetailsUserDto.LoanData> Loans { get; set; }
+        public IList<LoanData> CurrentLoans { get; set; }
+        public IList<LoanData> PastLoans { get; set; }
+
     }
 }

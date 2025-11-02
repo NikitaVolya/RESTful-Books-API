@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RESTful_Books_API.DTO.User;
 
 
 namespace RESTful_Books_API.Profiles
@@ -8,12 +9,23 @@ namespace RESTful_Books_API.Profiles
         public UserProfile()
         {
 
-            CreateMap<DTO.ShortUserDto, Models.User>().ReverseMap();
+            CreateMap<ShortUserDto, Models.User>().ReverseMap();
 
-            CreateMap<Models.User, DTO.DetailsUserDto>()
-                .ForMember(dest => dest.Loans, opt =>
+            CreateMap<Models.User, DetailsUserDto>()
+                .ForMember(dest => dest.CurrentLoans, opt =>
                 {
-                    opt.MapFrom(src => src.Loans.Select(loan => new DTO.DetailsUserDto.LoanData
+                    opt.MapFrom(src => src.Loans.Where(l => l.ReturnDate == null).Select(loan => new DetailsUserDto.LoanData
+                    {
+                        Id = loan.Id,
+                        BookId = loan.BookId,
+                        BookTitle = loan.Book.Title,
+                        LoanDate = loan.LoanDate,
+                        ReturnDate = loan.ReturnDate
+                    }).ToList());
+                })
+                .ForMember(dest => dest.PastLoans, opt =>
+                {
+                    opt.MapFrom(src => src.Loans.Where(l => l.ReturnDate != null).Select(loan => new DetailsUserDto.LoanData
                     {
                         Id = loan.Id,
                         BookId = loan.BookId,

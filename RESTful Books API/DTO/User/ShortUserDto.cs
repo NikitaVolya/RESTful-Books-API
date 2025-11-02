@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RESTful_Books_API.DTO
+namespace RESTful_Books_API.DTO.User
 {
     public class ShortUserDto
     {
