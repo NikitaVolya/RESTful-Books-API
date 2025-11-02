@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RESTful_Books_API.Models;
 using RESTful_Books_API.Data;
 using AutoMapper;
+using RESTful_Books_API.Services;
 
 namespace RESTful_Books_API.Controllers
 {
@@ -12,11 +13,13 @@ namespace RESTful_Books_API.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly UserService _userService;
 
-        public UserController(AppDbContext context, IMapper mapper)
+        public UserController(AppDbContext context, IMapper mapper, UserService userService)
         {
             _context = context;
             _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpGet("all")]
@@ -40,6 +43,11 @@ namespace RESTful_Books_API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateUser([FromBody] DTO.ShortUserDto createUserDto)
         {
+            if (!await _userService.IsEmailUnique(createUserDto.Email))
+            {
+                return Conflict(new { message = "Email already in use." });
+            }
+
             User user = _mapper.Map<User>(createUserDto);
 
             user.MembershipDate = DateOnly.FromDateTime(DateTime.Now);
