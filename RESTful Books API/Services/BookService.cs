@@ -43,5 +43,16 @@ namespace RESTful_Books_API.Services
 
             return book.CopiesAvailable - relevantLoansNumber;
         }
+
+        public async Task<bool> IsBookAvailableAsync(int bookId)
+        {
+            int availableCopies = await GetRelevantAvailableCopiesAsync(bookId);
+            return availableCopies > 0;
+        }
+
+        public async Task<bool> BookTitleIsUniqueAsync(string title)
+        {
+            return !await _context.Books.AnyAsync(b => b.Title.ToLower().Replace(" ", "") == title.ToLower().Replace(" ", ""));
+        }
     }
 }

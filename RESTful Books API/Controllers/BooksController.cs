@@ -73,6 +73,11 @@ namespace RESTful_Books_API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] ShortBookDto bookDto)
         {
+            if (!await _bookService.BookTitleIsUniqueAsync(bookDto.Title))
+            {
+                return BadRequest(new { message = "A book with the same title already exists." });
+            }
+
             var book = _mapper.Map<Models.Book>(bookDto);
 
             _context.Books.Add(book);
