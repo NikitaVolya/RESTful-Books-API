@@ -1,25 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RESTful_Books_API.Models
+namespace RESTful_Books_API.DTO.User
 {
-    public class User
+    public class CreateUserDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [MinLength(2)]
+        [MaxLength(50)]
         public string FirstName { get; set; } = null!;
 
         [MinLength(2)]
+        [MaxLength(50)]
         public string LastName { get; set; } = null!;
-
-        public string PasswordHash { get; set; } = null!;
 
         [EmailAddress]
         public string Email { get; set; } = null!;
 
-        public DateOnly MembershipDate { get; set; }
-
-        public IList<Loan> Loans { get; set; }
+        [MinLength(6)]
+        public string Password { get; set; } = null!;
     }
 }

@@ -9,7 +9,7 @@ using RESTful_Books_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var key = "This_is_my_first_Test_Key";
+var key = "This_is_my_first_Test_Key_That_Is_Long_Enough_123!";
 
 builder.Services.AddAuthentication(
     options =>
@@ -67,6 +67,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Add services to the container.
 

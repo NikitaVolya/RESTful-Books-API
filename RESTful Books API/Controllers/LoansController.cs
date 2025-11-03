@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RESTful_Books_API.Data;
 using RESTful_Books_API.DTO.Loan;
 using RESTful_Books_API.Models;
 using RESTful_Books_API.Services;
+using System.Security.Claims;
 
 namespace RESTful_Books_API.Controllers
 {

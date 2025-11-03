@@ -11,6 +11,12 @@ namespace RESTful_Books_API.Profiles
 
             CreateMap<ShortUserDto, Models.User>().ReverseMap();
 
+            CreateMap<CreateUserDto, Models.User>()
+                .ForMember(dest => dest.PasswordHash, opt =>
+                {
+                    opt.Ignore();
+                });
+
             CreateMap<Models.User, DetailsUserDto>()
                 .ForMember(dest => dest.CurrentLoans, opt =>
                 {
