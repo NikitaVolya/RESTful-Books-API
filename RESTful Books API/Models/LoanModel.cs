@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RESTful_Books_API.Models
 {
-    public class Loan
+    public class LoanModel
     {
         [Key]
         public int Id { get; set; }
@@ -12,10 +12,10 @@ namespace RESTful_Books_API.Models
 
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public UserModel User { get; set; } = null!;
 
         [ForeignKey("Book")]
         public int BookId { get; set; }
-        public Book Book { get; set; } = null!;
+        public BookModel Book { get; set; } = null!;
     }
 }

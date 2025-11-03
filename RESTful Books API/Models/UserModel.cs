@@ -2,7 +2,7 @@
 
 namespace RESTful_Books_API.Models
 {
-    public class User
+    public class UserModel
     {
         [Key]
         public int Id { get; set; }
@@ -20,6 +20,6 @@ namespace RESTful_Books_API.Models
 
         public DateOnly MembershipDate { get; set; }
 
-        public IList<Loan> Loans { get; set; }
+        public IList<LoanModel> Loans { get; set; }
     }
 }

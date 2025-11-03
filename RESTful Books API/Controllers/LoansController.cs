@@ -116,7 +116,7 @@ namespace RESTful_Books_API.Controllers
                 return Conflict(new { message = "No available copies for the specified book." });
             }
 
-            Loan loan = new Loan
+            LoanModel loan = new LoanModel
             {
                 UserId = user.Id,
                 BookId = book.Id,
@@ -157,13 +157,13 @@ namespace RESTful_Books_API.Controllers
                 return NotFound(new { message = "Loan not found." });
             }
 
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == updateLoanDto.UserId);
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == updateLoanDto.UserId);
             if (user == null)
             {
                 return NotFound(new { message = "User not found." });
             }
 
-            Book? book = await _context.Books.FirstOrDefaultAsync(b => b.Id == updateLoanDto.BookId);
+            BookModel? book = await _context.Books.FirstOrDefaultAsync(b => b.Id == updateLoanDto.BookId);
             if (book == null)
             {
                 return NotFound(new { message = "Book not found." });

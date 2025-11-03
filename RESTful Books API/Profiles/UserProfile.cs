@@ -9,15 +9,15 @@ namespace RESTful_Books_API.Profiles
         public UserProfile()
         {
 
-            CreateMap<ShortUserDto, Models.User>().ReverseMap();
+            CreateMap<ShortUserDto, Models.UserModel>().ReverseMap();
 
-            CreateMap<CreateUserDto, Models.User>()
+            CreateMap<CreateUserDto, Models.UserModel>()
                 .ForMember(dest => dest.PasswordHash, opt =>
                 {
                     opt.Ignore();
                 });
 
-            CreateMap<Models.User, DetailsUserDto>()
+            CreateMap<Models.UserModel, DetailsUserDto>()
                 .ForMember(dest => dest.CurrentLoans, opt =>
                 {
                     opt.MapFrom(src => src.Loans.Where(l => l.ReturnDate == null).Select(loan => new DetailsUserDto.LoanData

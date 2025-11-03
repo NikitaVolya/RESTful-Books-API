@@ -15,7 +15,7 @@ namespace RESTful_Books_API.Services
             _context = context;
         }
 
-        public async Task<User?> ValidateUserAsync(string email, string password)
+        public async Task<UserModel?> ValidateUserAsync(string email, string password)
         {
             var hash = HashPassword(password);
             return await _context.Users

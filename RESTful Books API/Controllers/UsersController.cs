@@ -111,7 +111,7 @@ namespace RESTful_Books_API.Controllers
                 return Conflict(new { message = "Email already in use." });
             }
 
-            User user = _mapper.Map<User>(createUserDto);
+            UserModel user = _mapper.Map<UserModel>(createUserDto);
 
             user.PasswordHash = _authService.HashPassword(createUserDto.Password);
             user.MembershipDate = DateOnly.FromDateTime(DateTime.Now);
@@ -174,7 +174,7 @@ namespace RESTful_Books_API.Controllers
             {
                 return Unauthorized(new { message = "User email claim not found." });
             }
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
 
             var loans = await _context.Loans
                     .Include(l => l.User)
@@ -204,7 +204,7 @@ namespace RESTful_Books_API.Controllers
             {
                 return Unauthorized(new { message = "User email claim not found." });
             }
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
             if (user == null)
             {
                 return NotFound(new { message = "User not found." });
@@ -222,7 +222,7 @@ namespace RESTful_Books_API.Controllers
                 return BadRequest(new { message = "No available copies for this book." });
             }
 
-            Loan loan = new Loan
+            LoanModel loan = new LoanModel
             {
                 UserId = user.Id,
                 BookId = book.Id,
@@ -242,7 +242,7 @@ namespace RESTful_Books_API.Controllers
             {
                 return Unauthorized(new { message = "User email claim not found." });
             }
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
             if (user == null)
             {
                 return NotFound(new { message = "User not found." });
@@ -271,7 +271,7 @@ namespace RESTful_Books_API.Controllers
             {
                 return Unauthorized(new { message = "User email claim not found." });
             }
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmailClaim);
             if (user == null)
             {
                 return NotFound(new { message = "User not found." });

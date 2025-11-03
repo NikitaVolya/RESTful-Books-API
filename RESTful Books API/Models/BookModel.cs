@@ -2,7 +2,7 @@
 
 namespace RESTful_Books_API.Models
 {
-    public class Book
+    public class BookModel
     {
         [Key]
         public int Id { get; set; }
@@ -21,6 +21,6 @@ namespace RESTful_Books_API.Models
         [Range(0, 300)]
         public int CopiesAvailable { get; set; }
 
-        public IList<Loan> Loans { get; set; } = null!;
+        public IList<LoanModel> Loans { get; set; } = null!;
     }
 }

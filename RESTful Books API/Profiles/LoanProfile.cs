@@ -9,12 +9,12 @@ namespace RESTful_Books_API.Profiles
     {
         public LoanProfile() {
 
-            CreateMap<Loan, ShortLoanDto>()
+            CreateMap<LoanModel, ShortLoanDto>()
                 .ForMember(dest => dest.UserEmail, src => src.MapFrom(opt => opt.User.Email));
 
-            CreateMap<UpdateLoanDto, Loan>().ReverseMap();
+            CreateMap<UpdateLoanDto, LoanModel>().ReverseMap();
 
-            CreateMap<Loan, DetailsLoanDto>()
+            CreateMap<LoanModel, DetailsLoanDto>()
                 .ForMember(dest => dest.User, src => src.MapFrom(opt => new DetailsLoanDto.UserData
                 {
                     Id = opt.User.Id,

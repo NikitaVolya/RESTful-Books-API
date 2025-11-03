@@ -7,9 +7,9 @@ namespace RESTful_Books_API.Profiles
 
         public BookProfile() {
 
-            CreateMap<Models.Book, DTO.Book.ShortBookDto>().ReverseMap();
+            CreateMap<Models.BookModel, DTO.Book.ShortBookDto>().ReverseMap();
 
-            CreateMap<Models.Book, DTO.Book.DetailsBookDto>()
+            CreateMap<Models.BookModel, DTO.Book.DetailsBookDto>()
                 .ForMember(dest => dest.CurrentLoans, opt =>
                 {
                     opt.MapFrom(src => src.Loans.Where(l => l.ReturnDate == null).Select(loan => new DTO.Book.DetailsBookDto.LoanData
