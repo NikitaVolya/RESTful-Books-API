@@ -22,6 +22,31 @@ namespace RESTful_Books_API.Controllers
             _bookService = bookService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id, [FromQuery] bool details = false)
+        {
+            var book = await _context.Books
+                .Include(b => b.Loans)
+                .ThenInclude(l => l.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (book == null)
+            {
+                return NotFound(new { message = "Book not found." });
+            }
+
+            if (details)
+            {
+                DetailsBookDto bookDto = _mapper.Map<DetailsBookDto>(book);
+                return Ok(bookDto);
+            }
+            else
+            {
+                ShortBookDto bookDto = _mapper.Map<ShortBookDto>(book);
+                return Ok(bookDto);
+            }
+        }
+
 
         [HttpGet("all")]
         public async Task<IActionResult> GetAll([FromQuery] bool details = false)
@@ -43,6 +68,19 @@ namespace RESTful_Books_API.Controllers
 
                 return Ok(booksDto);
             }
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] ShortBookDto bookDto)
+        {
+            var book = _mapper.Map<Models.Book>(bookDto);
+
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+
+            var createdBookDto = _mapper.Map<ShortBookDto>(book);
+
+            return CreatedAtAction(nameof(GetById), new { id = book.Id }, createdBookDto);
         }
     }
 }
