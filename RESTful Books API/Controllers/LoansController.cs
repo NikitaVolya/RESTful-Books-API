@@ -136,6 +136,11 @@ namespace RESTful_Books_API.Controllers
             {
                 return NotFound(new { message = "Loan not found." });
             }
+            if (loan.ReturnDate == null)
+            {
+                return BadRequest(new { message = "Cannot delete an active loan. Please return the book first." });
+            }
+
             _context.Loans.Remove(loan);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Loan deleted successfully." });
