@@ -15,7 +15,7 @@ namespace RESTful_Books_API.Models
         [MaxLength(50)]
         public string Author { get; set; }
 
-        [Range(9, 9)]
+        [Range(100000000, 9999999999999)]
         public int ISBN { get; set; }
 
         [Range(0, 300)]

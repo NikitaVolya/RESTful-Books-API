@@ -12,10 +12,10 @@ namespace RESTful_Books_API.Models
 
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
         [ForeignKey("Book")]
         public int BookId { get; set; }
-        public Book Book { get; set; }
+        public Book Book { get; set; } = null!;
     }
 }
