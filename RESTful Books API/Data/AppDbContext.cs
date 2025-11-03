@@ -8,6 +8,8 @@ namespace RESTful_Books_API.Data
         public DbSet<Models.UserModel> Users { get; set; }
         public DbSet<Models.LoanModel> Loans { get; set; }
 
+        public DbSet<Models.AdminModel> Admins { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
