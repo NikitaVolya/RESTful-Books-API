@@ -9,11 +9,11 @@ namespace RESTful_Books_API.Models
 
         [MinLength(4)]
         [MaxLength(100)]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         [MinLength(4)]
         [MaxLength(50)]
-        public string Author { get; set; }
+        public string Author { get; set; } = null!;
 
         [Range(100000000, 9999999999999)]
         public int ISBN { get; set; }
@@ -21,6 +21,6 @@ namespace RESTful_Books_API.Models
         [Range(0, 300)]
         public int CopiesAvailable { get; set; }
 
-        public IList<Loan> Loans { get; set; }
+        public IList<Loan> Loans { get; set; } = null!;
     }
 }

@@ -47,13 +47,40 @@ namespace RESTful_Books_API.Controllers
             }
         }
 
+        [HttpGet("isbn/{isbn}")]
+        public async Task<IActionResult> GetByIsbn(int isbn, [FromQuery] bool details = false)
+        {
+            var book = await _context.Books
+                .Include(b => b.Loans)
+                .ThenInclude(l => l.User)
+                .FirstOrDefaultAsync(b => b.ISBN == isbn);
+
+            if (book == null)
+            {
+                return NotFound(new { message = "Book not found." });
+            }
+
+            if (details)
+            {
+                DetailsBookDto bookDto = _mapper.Map<DetailsBookDto>(book);
+                return Ok(bookDto);
+            }
+            else
+            {
+                ShortBookDto bookDto = _mapper.Map<ShortBookDto>(book);
+                return Ok(bookDto);
+            }
+        }
+
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll([FromQuery] bool details = false)
+        public async Task<IActionResult> GetAll([FromQuery] bool details = false, 
+                                                [FromQuery] string? author = null)
         {
             var books = await _context.Books
                 .Include(b => b.Loans)
                 .ThenInclude(l => l.User)
+                .Where(b => string.IsNullOrEmpty(author) || b.Author.ToLower().Contains(author.ToLower()))
                 .ToListAsync();
 
             if (details)
@@ -86,6 +113,46 @@ namespace RESTful_Books_API.Controllers
             var createdBookDto = _mapper.Map<ShortBookDto>(book);
 
             return CreatedAtAction(nameof(GetById), new { id = book.Id }, createdBookDto);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound(new { message = "Book not found." });
+            }
+
+            if (book.CopiesAvailable != await _bookService.GetRelevantAvailableCopiesAsync(id))
+            {
+                return BadRequest(new { message = "Cannot delete a book that has active loans." });
+            }
+
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ShortBookDto bookDto)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound(new { message = "Book not found." });
+            }
+            if (book.Title != bookDto.Title && !await _bookService.BookTitleIsUniqueAsync(bookDto.Title))
+            {
+                return BadRequest(new { message = "A book with the same title already exists." });
+            }
+
+            _mapper.Map(bookDto, book);
+            _context.Books.Update(book);
+            await _context.SaveChangesAsync();
+
+            var updatedBookDto = _mapper.Map<ShortBookDto>(book);
+            return Ok(updatedBookDto);
         }
     }
 }
