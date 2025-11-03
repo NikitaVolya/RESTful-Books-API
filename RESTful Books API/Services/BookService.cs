@@ -54,5 +54,10 @@ namespace RESTful_Books_API.Services
         {
             return !await _context.Books.AnyAsync(b => b.Title.ToLower().Replace(" ", "") == title.ToLower().Replace(" ", ""));
         }
+
+        public async Task<bool> BookISBNIsUniqueAsync(int isbn)
+        {
+            return !await _context.Books.AnyAsync(b => b.ISBN == isbn);
+        }
     }
 }

@@ -105,6 +105,11 @@ namespace RESTful_Books_API.Controllers
                 return BadRequest(new { message = "A book with the same title already exists." });
             }
 
+            if (!await _bookService.BookISBNIsUniqueAsync(bookDto.ISBN))
+            {
+                return BadRequest(new { message = "A book with the same ISBN already exists." });
+            }
+
             var book = _mapper.Map<Models.BookModel>(bookDto);
 
             _context.Books.Add(book);
