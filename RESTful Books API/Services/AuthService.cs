@@ -22,6 +22,13 @@ namespace RESTful_Books_API.Services
                     .FirstOrDefaultAsync(u => u.Email == email && u.PasswordHash == hash);
         }
 
+        public async Task<AdminModel?> ValidateAdminAsync(string username, string password)
+        {
+            var hash = HashPassword(password);
+            return await _context.Admins
+                .FirstOrDefaultAsync(a => a.Username == username && a.PasswordHash == hash);
+        }
+
         public string HashPassword(string password)
         {
             using var sha256 = SHA256.Create();
