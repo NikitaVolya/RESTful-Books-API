@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RESTful_Books_API.Data;
-using AutoMapper;
+using RESTful_Books_API.Models;
 using RESTful_Books_API.Services;
+using System.Security.Cryptography;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -92,5 +94,23 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+
+    if (!db.Admins.Any())
+    {
+        using var sha256 = SHA256.Create();
+        var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes("rootroot"));
+        db.Admins.Add(new AdminModel
+        {
+            Username = "admin",
+            PasswordHash = Convert.ToBase64String(bytes)
+        });
+        db.SaveChanges();
+    }
+}
 
 app.Run();

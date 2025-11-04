@@ -19,17 +19,17 @@ namespace RESTful_Books_API.Controllers
     public class AdminsController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private readonly IMapper _mapper;
 
-        public AdminsController(AppDbContext context, AuthService authService, IMapper mapper)
+        public AdminsController(AppDbContext context, IAuthService authService, IMapper mapper)
         {
             _context = context;
             _authService = authService;
             _mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginAdminDto loginAdminDto)
         {
             AdminModel? adminModel = await _authService.ValidateAdminAsync(loginAdminDto.Username, loginAdminDto.Password);

@@ -24,7 +24,7 @@ namespace RESTful_Books_API.Controllers
             _mapper = mapper;
             _bookService = bookService;
         }
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id, [FromQuery] bool details = false)
         {
@@ -77,6 +77,7 @@ namespace RESTful_Books_API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("return/{id}")]
         public async Task<IActionResult> ReturnLoan([FromRoute] int id)
         {
@@ -96,6 +97,7 @@ namespace RESTful_Books_API.Controllers
             return Ok(new { message = "Loan returned successfully." });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> CreateLoan([FromBody] CreateLoanDto createLoanDto)
         {
@@ -130,6 +132,7 @@ namespace RESTful_Books_API.Controllers
             return Ok(new { message = "Loan created successfully.", LoanId = loan.Id });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteLoan([FromBody] int id)
         {
@@ -148,6 +151,7 @@ namespace RESTful_Books_API.Controllers
             return Ok(new { message = "Loan deleted successfully." });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateLoan([FromRoute] int id, [FromBody] UpdateLoanDto updateLoanDto)
         {

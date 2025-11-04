@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RESTful_Books_API.Data;
@@ -48,7 +49,7 @@ namespace RESTful_Books_API.Controllers
         }
 
         [HttpGet("isbn/{isbn}")]
-        public async Task<IActionResult> GetByIsbn(int isbn, [FromQuery] bool details = false)
+        public async Task<IActionResult> GetByISBN(int isbn, [FromQuery] bool details = false)
         {
             var book = await _context.Books
                 .Include(b => b.Loans)
@@ -97,6 +98,7 @@ namespace RESTful_Books_API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] ShortBookDto bookDto)
         {
@@ -120,6 +122,7 @@ namespace RESTful_Books_API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = book.Id }, createdBookDto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -139,6 +142,7 @@ namespace RESTful_Books_API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] ShortBookDto bookDto)
         {

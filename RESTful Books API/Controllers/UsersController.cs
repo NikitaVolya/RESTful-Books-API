@@ -32,6 +32,7 @@ namespace RESTful_Books_API.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id, [FromQuery] bool details = false)
         {
@@ -53,6 +54,7 @@ namespace RESTful_Books_API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllUsers([FromQuery] bool details = false)
         {
@@ -103,6 +105,7 @@ namespace RESTful_Books_API.Controllers
             return Ok(new { Token = tokenString });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
         {
@@ -122,6 +125,7 @@ namespace RESTful_Books_API.Controllers
             return Ok("User registered successfully.");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] ShortUserDto updateUserDto)
         {
@@ -143,6 +147,7 @@ namespace RESTful_Books_API.Controllers
             return Ok(new { message = "User updated successfully." });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
@@ -234,6 +239,7 @@ namespace RESTful_Books_API.Controllers
             return Ok(new { message = "Book loaned successfully." });
         }
 
+        [Authorize(Roles = "User")]
         [HttpPut("loan/return/{id}")]
         public async Task<IActionResult> ReturnLoanById([FromRoute] int id)
         {
@@ -263,6 +269,7 @@ namespace RESTful_Books_API.Controllers
             return Ok(new { message = "Loan returned successfully." });
         }
 
+        [Authorize(Roles = "User")]
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
         {
